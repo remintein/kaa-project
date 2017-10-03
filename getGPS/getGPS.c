@@ -72,15 +72,20 @@ int main(void)
 		{
 		fprintf(stderr,"Unable to open serial device: %s\n", strerror(errno)) ;
 		}
-	else	
+	else
 		{
 		serialPuts(SerialPort,"AT+CGDATA\r\n");
 		serialFlush(SerialPort);
+		delay(1000);
 		char c=serialGetchar(SerialPort);
 		printf("%c",c);
-		
+		delay(1000);
+		serialPuts(SerialPort,"AT+CGREG\r\n");
+		serialFlush(SerialPort);
+		delay(1000);
+		c=serialGetchar(SerialPort);
+		printf("%c",c);
 		init_module_GPS();
-		
 		}
 	while(1)
 	{
