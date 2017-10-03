@@ -1,0 +1,2 @@
+/usr/bin/ar qc libextension_user.a  CMakeFiles/extension_user.dir/src/extensions/user/kaa_user.c.o
+/usr/bin/ranlib libextension_user.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libextension_event.a  CMakeFiles/extension_event.dir/src/extensions/event/kaa_event.c.o
+/usr/bin/ranlib libextension_event.a

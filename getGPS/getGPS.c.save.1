@@ -1,0 +1,194 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <wiringPi.h>
+#include <wiringSerial.h>
+int SerialPort;
+int i=0;
+int in=0;
+char GPS_data_p[500];
+
+//char GPRMC[20]="GP$GP$GPRMC";
+//char * Filter(char *Array, char *Sample, int strlen_Sample);
+//void printfarray(char *array,int len);
+void get_GPS_sample(void);
+
+/* void init_module_GPS(void){
+	
+	char c;
+	int out=0;
+	printf("waiting for the module GPS...\n");
+	while(1)
+	{
+		digitalWrite(16,HIGH);	
+		while(serialDataAvail(SerialPort))
+		{
+		c=serialGetchar(SerialPort);
+		printf("%c",c);
+		if(c=='3') out=1;
+		fflush(stdout);
+		}
+		if(out==1) break;
+	}
+		digitalWrite(16,LOW);
+	printf("module GPS ready\n");
+	printf("Send AT+GPS=1\n");		
+	serialPuts(SerialPort, "AT+GPS=1\r\n");
+	serialFlush(SerialPort);
+	
+	printf("waiting for OK..\n");
+	out=0;
+	while(1)
+	{
+		while(serialDataAvail(SerialPort))
+		{
+			c=serialGetchar(SerialPort);
+			if(c=='K') out=1;
+			printf("%c",c);			
+			fflush(stdout);
+		}
+		if(out==1) break;
+	}
+	printf("Receive: OK\n");
+	printf("Send AT+GPSRD=1\n");
+	serialPuts(SerialPort,"AT+GPSRD=1\r\n");
+	serialFlush(SerialPort);
+} */
+
+int main(void)
+{
+	/*wiringPiSetupGpio();
+	pinMode(16,OUTPUT);
+	if((SerialPort = serialOpen ("/dev/ttyAMA0",115200)) <0 )
+		{
+		fprintf(stderr,"Unable to open serial device: %s\n", strerror(errno)) ;
+		}
+	else	init_module_GPS(); */
+
+	while(1)
+	{
+	get_GPS_sample();
+	delay(1000);
+	}
+	return 1;
+}
+
+/*char * Filter(char *Array, char *Sample, int strlen_Sample)
+{
+	int i=0;
+	int out=0;
+	int f_index=0;
+	int fla=0;
+	int j=0;
+	char filter[100];
+	for(i=0;;i++)
+	{
+		if (*(Array + i)=='\0') break;
+		if (*(Array + i) == *(Sample + j)) j++;		
+		if (j >= (strlen_Sample)) fla=1;
+		 
+		if(fla==1)
+		{
+		if(*(Array + i) =='$') break;
+		filter[f_index]=*(Array + i);
+		f_index++;
+					
+		}
+	}
+	return filter;
+
+}*/
+
+void get_GPS_sample(void)
+{
+	int in=0;
+	int count=0;
+	char c;
+	char *FaC;
+	char time[6];
+	char La[12];
+	char Lo[12];
+	char dir1[1];
+	char dir2[1];
+	char date[6];
+	char speed[6];
+	char temp[80]="$GPRMC,061517.000,A,1046.31662,N,10639.53773,E,0.00,0.00,030417,null,null,A*60";
+	/* for(i=0;i<500;i++) GPS_data_p[i]='\0';
+	while(serialDataAvail(SerialPort))
+	{
+	c=serialGetchar(SerialPort);
+	GPS_data_p[in]=c;
+	in++;
+	if(in==500) break;
+	fflush(stdout);
+	} */
+
+	//FaC=Filter(&GPS_data_p,&GPRMC,11);
+	for(i=0;temp[i]!='\0';i++)
+	{
+	if(temp[i]==',') { count++;in=0;}
+	switch(count)
+	{
+		case 1: {//*(time+in)=*(temp+i);
+			time[in]=temo[i];
+			in++;
+			break;}
+		case 3: {//*(La+in)=*(temp+i);
+			La[in]=temp[i];
+			in++;
+			break;}
+		case 4: {dir1[0]=teamp[i];
+			break;}
+		case 5: {//*(Lo+in)=*(temp+i);
+			Lo[in]=temp[i];
+			in++;
+			break;}
+		case 6: {dir2[0]=temp[i];
+			break;}
+		case 7: {//*(speed+in)=*(temp+i);
+			speed[in]=temp[i];
+			in++;
+			break;}
+		case 9: {//*(date+in)=*(temp+i);
+			date[in]=temp[i];
+			in++;
+			break;}
+		default : delay(10);
+	}
+	}
+	time[0]=' ';
+	La[0]=' ';
+	Lo[0]=' ';
+	date[0]=' ';
+	speed[0]=' ';
+
+
+    	printf("Sampled GPS: ");
+	printf("\n");
+	printf("time: ");
+	printfarray(&time ,6);
+	printf("\n");
+	printf("La: ");
+	printfarray(&La,12);
+	printf("\n");
+	printf("%c",dir1);
+	printf("\n");
+	printf("Lo: ");
+	printfarray(&Lo,12);
+	printf("\n");
+	printf("%c",dir2);
+	printf("\n");
+	printf("speed: ");
+	printfarray(&speed,6);
+	printf("\n");
+	printf("date: ");
+	printfarray(&date,6);
+	printf("\n");
+}
+void printfarray(char *array,int len)
+{
+int i;
+for(i=0;i<len;i++)
+printf("%c",*(array+i));
+}

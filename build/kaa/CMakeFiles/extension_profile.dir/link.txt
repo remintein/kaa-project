@@ -1,0 +1,2 @@
+/usr/bin/ar qc libextension_profile.a  CMakeFiles/extension_profile.dir/src/extensions/profile/kaa_profile.c.o
+/usr/bin/ranlib libextension_profile.a

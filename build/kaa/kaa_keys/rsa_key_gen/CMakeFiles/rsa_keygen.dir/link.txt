@@ -1,0 +1,2 @@
+/usr/bin/ar qc librsa_keygen.a  CMakeFiles/rsa_keygen.dir/kaa_rsa_key_gen.c.o
+/usr/bin/ranlib librsa_keygen.a

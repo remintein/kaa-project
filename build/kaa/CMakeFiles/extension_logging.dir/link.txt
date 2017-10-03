@@ -1,0 +1,2 @@
+/usr/bin/ar qc libextension_logging.a  CMakeFiles/extension_logging.dir/src/extensions/logging/kaa_logging.c.o
+/usr/bin/ranlib libextension_logging.a

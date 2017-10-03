@@ -1,0 +1,1 @@
+/usr/bin/cc   -fPIC -std=c99 -Wall -Wextra -pedantic -D_GNU_SOURCE   CMakeFiles/generate_rsa_keys.dir/kaa_rsa_key_gen_app.c.o  -o generate_rsa_keys -rdynamic rsa_key_gen/librsa_keygen.a rsa_key_gen/mbedtls/libmbedtls.a 

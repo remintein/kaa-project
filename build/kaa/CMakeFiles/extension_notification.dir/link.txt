@@ -1,0 +1,2 @@
+/usr/bin/ar qc libextension_notification.a  CMakeFiles/extension_notification.dir/src/extensions/notification/kaa_notification_manager.c.o
+/usr/bin/ranlib libextension_notification.a

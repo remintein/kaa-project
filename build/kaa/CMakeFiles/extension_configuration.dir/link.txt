@@ -1,0 +1,2 @@
+/usr/bin/ar qc libextension_configuration.a  CMakeFiles/extension_configuration.dir/src/extensions/configuration/kaa_configuration_manager.c.o
+/usr/bin/ranlib libextension_configuration.a
