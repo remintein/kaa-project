@@ -20,6 +20,48 @@ static unsigned short tp_days[4][12] =
 };
 void get_GPS_sample(void);
 
+void init_gprs(void){
+	
+	char c;
+	int out=0;
+	
+	digitalWrite(16,LOW);	
+	printf("waiting to start GPRS...\n");
+	fflush(stdout);
+	
+	while(1)
+	{
+		digitalWrite(16,HIGH);	
+		while(serialDataAvail(SerialPort))
+		{
+		c=serialGetchar(SerialPort);
+		printf("%c",c);
+		if(c=='3') out=1;
+		fflush(stdout);
+		}
+		if(out==1) break;
+	}
+	digitalWrite(16,LOW);
+	printf("Connect to Server\n");
+	printf("Send AT+CIPSTART=""TCP"",""www.google.com.vn"",80\r\n");		
+	serialPuts(SerialPort, "AT+CIPSTART=""TCP"",""www.google.com.vn"",80\r\n");
+	serialFlush(SerialPort);
+	
+	printf("waiting for OK..\n");
+	out=0;
+	while(1)
+	{
+		while(serialDataAvail(SerialPort))
+		{
+			c=serialGetchar(SerialPort);
+			if(c=='K') out=1;
+			printf("%c",c);			
+			fflush(stdout);
+		}
+		if(out==1) break;
+	}
+	printf("Receive: OK\n");	
+}
 void init_module_GPS(void){
 
 	char c;
@@ -74,17 +116,7 @@ int main(void)
 		}
 	else
 		{
-		serialPuts(SerialPort,"AT+CGDATA\r\n");
-		serialFlush(SerialPort);
-		delay(1000);
-		char c=serialGetchar(SerialPort);
-		printf("%c",c);
-		delay(1000);
-		serialPuts(SerialPort,"AT+CGREG\r\n");
-		serialFlush(SerialPort);
-		delay(1000);
-		c=serialGetchar(SerialPort);
-		printf("%c",c);
+		init_gprs();
 		init_module_GPS();
 		}
 	while(1)
